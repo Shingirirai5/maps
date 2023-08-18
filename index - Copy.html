@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Country Autocomplete Example</title>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBWKOrh3FKVUwZCqGQQYZDJ4SPBpFpndW4&libraries=places"></script>
+</head>
+<body>
+  <div class="form-group">
+    <label for="country">Country</label>
+    <input type="text" class="form-control" id="country" placeholder="Start typing a country name">
+  </div>
+
+  <script>
+    // Initialize the Google Places Autocomplete
+    var input = document.getElementById('country');
+    var options = {
+      types: ['(regions)'] // Limit results to countries
+    };
+    var autocomplete = new google.maps.places.Autocomplete(input, options);
+
+    // Listen for place selection
+    autocomplete.addListener('place_changed', function() {
+      var place = autocomplete.getPlace();
+      if (place && place.address_components) {
+        for (var i = 0; i < place.address_components.length; i++) {
+          var component = place.address_components[i];
+          if (component.types.includes('country')) {
+            document.getElementById('country').value = component.long_name;
+            break;
+          }
+        }
+      }
+    });
+  </script>
+</body>
+</html>
